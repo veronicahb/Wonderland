@@ -1,5 +1,7 @@
 'use strict'
 
+const { route } = require('@adonisjs/framework/src/Route/Manager')
+
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -19,3 +21,9 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+Route.post('/register', 'AuthController.register');
+Route.post('/authenticate', 'AuthController.authenticate');
+Route.resource('personagem', 'PersonagemController')
+Route.resource('quiz', 'QuizController')
+Route.resource('questao', 'QuestaoController')
+Route.resource('alternativa', 'AlternativaController')

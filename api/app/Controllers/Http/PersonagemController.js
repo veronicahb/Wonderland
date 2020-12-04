@@ -3,7 +3,7 @@
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
-
+const Personagem = use("App/Models/Personagem")
 /**
  * Resourceful controller for interacting with personagems
  */
@@ -18,19 +18,10 @@ class PersonagemController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const persona = await Personagem.all()
+    return persona
   }
 
-  /**
-   * Render a form to be used for creating a new personagem.
-   * GET personagems/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
-  }
 
   /**
    * Create/save a new personagem.
@@ -41,6 +32,9 @@ class PersonagemController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const dado = request.only(["idpersonagem", "nome", "idade", "ator", "sobre", "imagem"])
+    const persona = await Personagem.create(dado)
+    return persona
   }
 
   /**
@@ -53,19 +47,11 @@ class PersonagemController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const persona = await Personagem.findOrFail(params.id)
+    return persona
   }
 
-  /**
-   * Render a form to update an existing personagem.
-   * GET personagems/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
-  }
+
 
   /**
    * Update personagem details.
@@ -76,6 +62,16 @@ class PersonagemController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const persona = await Personagem.findOrFail(params.id)
+    const {idpersonagem, nome, idade, ator, sobre, imagem} = request.only(["idpersonagem", "nome", "idade", "ator", "sobre", "imagem"])
+    persona.idpersonagem = idpersonagem
+    persona.nome=nome
+    persona.idade=idade 
+    persona.ator=ator
+    persona.sobre=sobre
+    persona.imagem=imagem
+    await persona.save()
+    return persona
   }
 
   /**
@@ -87,6 +83,9 @@ class PersonagemController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const persona = await Personagem.findOrFail(params.id)
+    await persona.delete()
+    
   }
 }
 

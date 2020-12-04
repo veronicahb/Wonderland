@@ -37,6 +37,9 @@ class User extends Model {
   quiz(){
     return this.belongsToMany('App/Models/Quiz')
   }
+  static get hidden(){
+    return["password"]
+  }
 }
 
 module.exports = User
